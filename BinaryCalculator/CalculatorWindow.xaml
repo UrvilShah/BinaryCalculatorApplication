@@ -1,0 +1,125 @@
+﻿<Window x:Class="BinaryCalculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BinaryCalculator"
+        mc:Ignorable="d"
+        Title="Binary Calculator" Height="300" Width="400" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Icon="/Calc.PNG">
+
+    <Window.Resources>
+        
+        <Style x:Key="numberButtonStyle" >           
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+            <Setter Property="Button.FontSize" Value="30"/>
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="Black"/>
+        </Style>
+
+        <Style x:Key="cancelButtonStyle" >
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+            <Setter Property="Button.FontSize" Value="30"/>
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="Maroon"/>
+        </Style>
+
+        <Style x:Key="mathOpButtonStyle" >
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+            <Setter Property="Button.FontSize" Value="30"/>
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="Gray"/>
+        </Style>
+
+        <Style x:Key="txtDisplayStyle" >
+            <Setter Property="TextBox.FontFamily" Value="Verdana"/>
+            <Setter Property="TextBox.FontSize" Value="35"/>
+            <Setter Property="TextBox.FontWeight" Value="Normal"/>
+            <Setter Property="TextBox.VerticalContentAlignment" Value="Center"/>
+            <Setter Property="TextBox.TextAlignment" Value="Right"/>
+            <Setter Property="TextBox.Focusable" Value="True"/>
+            <Setter Property="TextBox.CaretBrush" Value="White" />
+        </Style>
+
+        <Style x:Key="textBlockStyle" >
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+            <Setter Property="Button.FontSize" Value="20"/>
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="TextBlock.Background" Value="CadetBlue"/>
+            <Setter Property="TextBlock.TextAlignment" Value="Right"/>            
+        </Style>
+        
+    </Window.Resources>
+    
+    <Grid ShowGridLines="False" VerticalAlignment="Stretch">
+
+        <Grid.Style>
+            <Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding DisplayTextFocus}" Value="True">
+                        <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=txtDisplay}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="0.5*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.25*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.25*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.25*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.25*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.25*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource textBlockStyle}" />
+        <TextBlock x:Name="lblInput" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="7" Style="{StaticResource textBlockStyle}" Text="{Binding Path=InputText}" />
+        <TextBlock Grid.Row="0" Grid.Column="8" Style="{StaticResource textBlockStyle}" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" Style="{StaticResource textBlockStyle}" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" Style="{StaticResource textBlockStyle}" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" Style="{StaticResource textBlockStyle}" />
+
+        <TextBox x:Name="txtDisplay"  TabIndex="1" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="7" PreviewTextInput="PreviewTextInput" Text="{Binding DisplayText, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource txtDisplayStyle}">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding CalculatorCommand}"  CommandParameter="="/>
+                <KeyBinding Key="NumPad1" Command="{Binding CalculatorCommand}" CommandParameter="1"/>
+                <KeyBinding Key="NumPad0" Command="{Binding CalculatorCommand}" CommandParameter="0"/>
+                <KeyBinding Key="D1" Command="{Binding CalculatorCommand}" CommandParameter="1"/>
+                <KeyBinding Key="D0" Command="{Binding CalculatorCommand}" CommandParameter="0"/>
+                <KeyBinding Key="OemPlus" Command="{Binding CalculatorCommand}" CommandParameter="+"/>
+                <KeyBinding Key="OemMinus" Command="{Binding CalculatorCommand}" CommandParameter="-"/>
+                <KeyBinding Key="Add" Command="{Binding CalculatorCommand}" CommandParameter="+"/>
+                <KeyBinding Key="Subtract" Command="{Binding CalculatorCommand}" CommandParameter="-"/>
+                <KeyBinding Key="Backspace" Command="{Binding CalculatorCommand}" CommandParameter="CE"/>
+                <KeyBinding Key="Delete" Command="{Binding CalculatorCommand}" CommandParameter="C"/>
+            </TextBox.InputBindings>
+        </TextBox>
+
+        <Button x:Name="btnCE" TabIndex="2" Content="C_E" Grid.Column="1" Grid.Row="4" Command="{Binding Path=CalculatorCommand}" CommandParameter="CE" Style="{StaticResource cancelButtonStyle}" />
+        <Button x:Name="btnC" TabIndex="3" Content="_C" Grid.Column="1" Grid.Row="6" Command="{Binding Path=CalculatorCommand}" CommandParameter="C" Style="{StaticResource cancelButtonStyle}" />
+
+        <Button x:Name="btnOne" TabIndex="4" Content="1" Grid.Column="3" Grid.Row="4"  Command="{Binding Path=CalculatorCommand}" CommandParameter="1" Style="{StaticResource numberButtonStyle}" />
+        <Button x:Name="btnZero" TabIndex="5" Content="0" Grid.Column="3" Grid.Row="6" Command="{Binding Path=CalculatorCommand}" CommandParameter="0"  Style="{StaticResource numberButtonStyle}" />
+
+        <Button x:Name="btnPlus" TabIndex="6" Content="+" Grid.Column="5" Grid.Row="4" Grid.RowSpan="3" Command="{Binding Path=CalculatorCommand}" CommandParameter="+" Style="{StaticResource mathOpButtonStyle}" />
+
+        <Button x:Name="btnMinus" TabIndex="7" Content="-" Grid.Column="7" Grid.Row="4" Command="{Binding Path=CalculatorCommand}" CommandParameter="-" Style="{StaticResource mathOpButtonStyle}" />
+        <Button x:Name="btnEqual" TabIndex="8" Content="=" Grid.Column="7" Grid.Row="6" Command="{Binding Path=CalculatorCommand}" CommandParameter="=" Style="{StaticResource mathOpButtonStyle}" />
+
+    </Grid>    
+</Window>
